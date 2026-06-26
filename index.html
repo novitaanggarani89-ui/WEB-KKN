@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KKN DESA GERBO 2026 - UNIVERSITAS YUDHARTA</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#00529C',
+                        brandLightBlue: '#E8F1F5',
+                        brandDarkBlue: '#003366',
+                        brandNavy: '#0A192F',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Chart.js for Financial Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00529C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #003366;
+        }
+        
+        /* Custom Keyframe Marquee Animations */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 25s linear infinite;
+        }
+        
+        /* View switching transitions */
+        .page-view {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .page-view.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 selection:bg-brandBlue selection:text-white overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <!-- Elegant Vector & Real Logo Image Container -->
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md border border-slate-100 p-1">
+                        <!-- Official Universitas Yudharta Pasuruan Logo URL with interactive fallback -->
+                        <img id="campus-nav-logo" src="LOGO KKN 2026.png" 
+                             alt="Logo Yudharta" 
+                             class="w-full h-full object-contain"
+                             onerror="this.style.display='none'; document.getElementById('fallback-svg-nav').style.display='block';">
+                        <svg id="fallback-svg-nav" class="w-8 h-8 fill-brandBlue hidden" viewBox="0 0 24 24">
+                            <path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6zm-1 8h2v3h-2v-3zm0-4h2v2h-2v-2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-black text-brandDarkBlue leading-none tracking-wide">KKN GERBO 2026</h1>
+                        <p class="text-[10px] sm:text-xs font-semibold text-brandBlue">UNIVERSITAS YUDHARTA</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation Menu -->
+                <div class="hidden lg:flex items-center gap-1">
+                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-brandBlue bg-brandLightBlue transition">Dashboard</button>
+                    <button onclick="switchView('struktural')" id="nav-struktural" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition">Struktural</button>
+                    <button onclick="switchView('biodata')" id="nav-biodata" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition">Biodata</button>
+                    <button onclick="switchView('presensi')" id="nav-presensi" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition">Presensi</button>
+                    <button onclick="switchView('proker')" id="nav-proker" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition">Program Kerja</button>
+                    <button onclick="switchView('keuangan')" id="nav-keuangan" class="nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition">Keuangan</button>
+                    <button onclick="switchView('dokumentasi')" id="nav-dokumentasi" class="nav-btn px-5 py-2 bg-brandBlue text-white text-xs sm:text-sm font-bold rounded-xl hover:bg-brandDarkBlue shadow-md hover:shadow-lg transition ml-2">Dokumentasi</button>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="flex lg:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-brandDarkBlue focus:outline-none p-2">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Stack -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-150 py-4 px-4 space-y-2 shadow-inner">
+            <button onclick="switchView('dashboard'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold bg-brandLightBlue text-brandBlue transition">Dashboard</button>
+            <button onclick="switchView('struktural'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">Struktural</button>
+            <button onclick="switchView('biodata'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">Biodata</button>
+            <button onclick="switchView('presensi'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">Presensi</button>
+            <button onclick="switchView('proker'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">Program Kerja</button>
+            <button onclick="switchView('keuangan'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">Keuangan</button>
+            <button onclick="switchView('dokumentasi'); toggleMobileMenu()" class="mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-brandBlue hover:bg-brandDarkBlue transition">Dokumentasi</button>
+        </div>
+    </nav>
+
+    <!-- MAIN APP CONTENT CONTAINER (Page Views) -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+
+        <!-- VIEW 1: DASHBOARD (Strictly village profile and running photo carousel only) -->
+        <section id="view-dashboard" class="page-view space-y-12">
+            <div class="relative rounded-3xl overflow-hidden bg-brandDarkBlue text-white shadow-2xl">
+                <!-- Decorative BG Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-r from-brandDarkBlue via-brandBlue/90 to-transparent z-0 opacity-95"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 sm:p-12 lg:p-16 items-center">
+                    <div class="space-y-6">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-200">
+                            <i class="fa-solid fa-circle-dot text-emerald-400"></i> Portal Utama KKN 2026
+                        </span>
+                        <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight">
+                            Selamat Datang di <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-white">Desa Gerbo</span>
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            Desa Gerbo terletak di lereng asri Kecamatan Purwodadi, Kabupaten Pasuruan. Menjadi wadah pengabdian mahasiswa Universitas Yudharta Pasuruan 2026 untuk menginisiasi transformasi sosial, pendidikan, ekonomi kreatif, serta penguatan budidaya pertanian lokal.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchView('proker')" class="px-6 py-3 bg-white text-brandDarkBlue font-bold text-sm rounded-xl hover:bg-slate-100 transition shadow-lg">Lihat Program Kerja</button>
+                            <button onclick="switchView('struktural')" class="px-6 py-3 border border-white/30 text-white font-bold text-sm rounded-xl hover:bg-white/10 transition">Struktural Tim</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Official Logo inside the Dashboard view -->
+                    <div class="flex justify-center">
+                        <div class="p-8 rounded-3xl bg-white/5 border border-white/10 shadow-2xl relative w-full max-w-sm flex flex-col items-center text-center">
+                            <div class="w-28 h-28 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4 p-2">
+                                <img id="campus-hero-logo" src="LOGO UYP.png" 
+                                     alt="Logo Universitas Yudharta" 
+                                     class="w-full h-full object-contain"
+                                     onerror="this.style.display='none'; document.getElementById('fallback-svg-hero').style.display='block';">
+                                <svg id="fallback-svg-hero" class="w-16 h-16 fill-brandBlue hidden" viewBox="0 0 24 24">
+                                    <path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6zm-1 8h2v3h-2v-3zm0-4h2v2h-2v-2z"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-extrabold text-white text-lg tracking-wide">UNIVERSITAS YUDHARTA</h4>
+                            <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest font-semibold">Pasuruan, Jawa Timur</p>
+                            <div class="w-12 h-0.5 bg-blue-300/30 my-4"></div>
+                            <p class="text-xs text-slate-300 italic">"Mengabdi dengan Ilmu, Membangun Kemandirian Desa Gerbo"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOTO BERJALAN (INFINITE CAROUSEL) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between px-2">
+                    <h3 class="text-lg font-extrabold text-brandDarkBlue flex items-center gap-2">
+                        <i class="fa-solid fa-camera-retro text-brandBlue"></i> Sekilas Potret Desa Gerbo
+                    </h3>
+                    <span class="text-xs font-bold text-slate-400">Digulir otomatis</span>
+                </div>
+                
+                <div class="relative w-full overflow-hidden bg-white py-6 rounded-2xl shadow-inner border border-slate-100">
+                    <div class="flex gap-6 animate-marquee w-max">
+                        <img src="berjalan/1.JPG" alt="Landscape 1" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/2.JPG" alt="Landscape 2" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/3.JPG" alt="Landscape 3" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/4.jpeg" alt="Landscape 4" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        
+                        <!-- Repeating pictures for infinite sliding effect -->
+                        <img src="berjalan/5.jpeg" alt="Landscape 1" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/6.jpeg" alt="Landscape 2" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/1.JPG" alt="Landscape 3" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                        <img src="berjalan/2.JPG" alt="Landscape 4" class="h-44 w-72 object-cover rounded-xl shadow-md border border-slate-100">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: STRUKTURAL KEPENGURUSAN -->
+        <section id="view-struktural" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Struktural Kepengurusan</h2>
+                <p class="text-slate-500 text-sm">Sinergi tim pelaksana KKN Gerbo 2026 yang terorganisir lengkap dengan divisi fungsional masing-masing.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Core Leaders -->
+                <div class="flex flex-col items-center gap-8">
+                    <!-- Ketua (Top Tier Card) -->
+                    <div class="bg-gradient-to-b from-brandBlue to-brandDarkBlue text-white p-6 rounded-2xl shadow-xl w-64 text-center border border-brandBlue/20 transform hover:-translate-y-2 transition duration-300" data-aos="fade-up">
+                        <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white/25 shadow-lg">
+                            <img src="anggota/M RIZAL EFENDI.jpg" alt="Ketua KKN" class="object-cover w-full h-full">
+                        </div>
+                        <h3 class="font-extrabold text-sm sm:text-base leading-tight">M RIZAL EFENDI</h3>
+                        <p class="text-[11px] text-blue-200 mt-1 font-bold tracking-wider uppercase">Ketua Koordinasi KKN</p>
+                    </div>
+
+                    <div class="w-0.5 h-10 bg-gradient-to-b from-brandBlue to-slate-200"></div>
+
+                    <!-- Sekretaris & Bendahara (Second Tier Grid) -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-4xl">
+                        <!-- Sekr 1 -->
+                        <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 text-center transform hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="50">
+                            <img src="anggota/JAMILAH MUFIDAH.JPG" alt="Sekretaris 1" class="w-16 h-16 mx-auto rounded-xl object-cover mb-3 shadow-inner">
+                            <h4 class="font-extrabold text-slate-800 text-sm">JAMILAH MUFIDAH</h4>
+                            <p class="text-xs text-brandBlue font-bold mt-1">Sekretaris 1</p>
+                        </div>
+                        <!-- Sekr 2 -->
+                        <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 text-center transform hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                            <img src="anggota/MITA IRMA DESIANTI.JPG" alt="Sekretaris 2" class="w-16 h-16 mx-auto rounded-xl object-cover mb-3 shadow-inner">
+                            <h4 class="font-extrabold text-slate-800 text-sm">MITA IRMA DESIANTI</h4>
+                            <p class="text-xs text-brandBlue font-bold mt-1">Sekretaris 2</p>
+                        </div>
+                        <!-- Bend 1 -->
+                        <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 text-center transform hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="150">
+                            <img src="anggota/AULIYAH LUTFIYAH S.JPG" alt="Bendahara 1" class="w-16 h-16 mx-auto rounded-xl object-cover mb-3 shadow-inner">
+                            <h4 class="font-extrabold text-slate-800 text-sm">AULIYAH LUTFIYAH S</h4>
+                            <p class="text-xs text-brandBlue font-bold mt-1">Bendahara 1</p>
+                        </div>
+                        <!-- Bend 2 -->
+                        <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 text-center transform hover:-translate-y-1 transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                            <img src="anggota/DIANA FITRIAH.JPG" alt="Bendahara 2" class="w-16 h-16 mx-auto rounded-xl object-cover mb-3 shadow-inner">
+                            <h4 class="font-extrabold text-slate-800 text-sm">DIANA FITRIAH</h4>
+                            <p class="text-xs text-brandBlue font-bold mt-1">Bendahara 2</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divisi-Divisi Pelaksana (Third Tier Grid with photos) -->
+                <div class="bg-slate-100 p-6 sm:p-8 rounded-3xl border border-slate-200/50 space-y-10">
+                    <h3 class="text-sm font-black text-brandDarkBlue uppercase tracking-widest text-center">Divisi Sektoral & Anggota Tim</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                        <!-- Divisi Acara -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-4" data-aos="fade-up">
+                            <div class="w-12 h-12 bg-brandLightBlue text-brandBlue rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-calendar-day"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">Divisi Acara</h4>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider">SEKTOR EVALUASI</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 w-full">
+                                <div class="text-center group">
+                                    <img src="anggota/MOCHAMMAD RIFQI ARIFULLOH.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Siska">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Rifqi (Co)</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/CHOIROTUN NISA'.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Teguh">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Nisa'</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/YESSA ARTHA SEFRILA.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Aldi">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Yessa</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/MUKHAMAT LUTFI RAMADANI.jpeg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Rani">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Lutfi</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/ADITIA DWI IKHYA'I.jpeg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Rani">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Adit</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divisi Humas -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-4" data-aos="fade-up" data-aos-delay="50">
+                            <div class="w-12 h-12 bg-brandLightBlue text-brandBlue rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-comments"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">Divisi Humas</h4>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider">SEKTOR MITRA</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 w-full">
+                                <div class="text-center group">
+                                    <img src="anggota/AHMAD IRSAD.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Fahmi">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">IRSAD</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divisi Konsumsi -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-4" data-aos="fade-up" data-aos-delay="100">
+                            <div class="w-12 h-12 bg-brandLightBlue text-brandBlue rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-bowl-food"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">Divisi Konsumsi</h4>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider">LOGISTIK KONSUMSI</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 w-full">
+                                <div class="text-center group">
+                                    <img src="anggota/SELVIA MARSELLA RAHMAN.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Riska">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Selvi (Co)</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/ROSA NUR AINI.jpeg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Ani">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Rosa</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/Nabilah Maulidah Aliyyah.png" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Melly">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Nabilah</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/INTAN DWI RAHMAWATI.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Dian">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Intan</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/DEWI YUMNA SARI SUSILO.jpeg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Riska">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Yumna</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/DEWI YUMNA SARI SUSILO.jpeg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Riska">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Aqila</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divisi Perlengkapan -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-4" data-aos="fade-up" data-aos-delay="150">
+                            <div class="w-12 h-12 bg-brandLightBlue text-brandBlue rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-packing"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">Perlengkapan</h4>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider">SARANA POSKO</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 w-full">
+                                <div class="text-center group">
+                                    <img src="anggota/SUKRON MARZUKI.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Bagas">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Sukron (Co)</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/M NUR ILHAM KOHARI.PNG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Doni">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Ilham</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/NADIA ZAKIYA ATTAMIMI.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Aris">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Nadia</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/ACHMAD AFANDI.jpg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Hendra">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Afandi</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/MOCHAMMAD SALIM.jpg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Hendra">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Salim</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divisi PDD -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/60 flex flex-col items-center text-center space-y-4" data-aos="fade-up" data-aos-delay="200">
+                            <div class="w-12 h-12 bg-brandLightBlue text-brandBlue rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-photo-film"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm">Divisi PDD</h4>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider">MEDIA & DOKUMENTASI</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 w-full">
+                                <div class="text-center group">
+                                    <img src="anggota/MUHAMMAD RUDI.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Galih">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Rudi (Co)</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/FATKHUR ROKHMAN.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Fina">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Fatkhur</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/NUR LAILATUL HASANAH.JPG" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Naufal">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Lail</p>
+                                </div>
+                                <div class="text-center group">
+                                    <img src="anggota/Wahyu Saputri N.jpg" class="w-10 h-10 rounded-full mx-auto object-cover border-2 border-slate-100" alt="Bagus">
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">Putri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: BIODATA ANGGOTA -->
+        <section id="view-biodata" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Biodata Anggota</h2>
+                <p class="text-slate-500 text-sm">Kenali lebih dekat mahasiswa pelaksana KKN dari Universitas Yudharta Pasuruan.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Distinct Polaroid-Badge Style Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Member Card 1 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/FATKHUR ROKHMAN.JPG" alt="Amelia Safitri" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Informatika</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 01</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">FATKHUR ROKHMAN</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 2O2369040015</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 2 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/M RIZAL EFENDI.jpg" alt="Yusuf Al-Farid" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Agribisnis</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 02</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">M RIZAL EFENDI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369060010</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 3 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MOCHAMMAD RIFQI ARIFULLOH.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Psikologi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 03</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">MOCHAMMAD RIFQI ARIFULLOH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369110003</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 4 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/AULIYAH LUTFIYAH S.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Industri</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 04</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">AULIYAH LUTFIYAH SALSABILLAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369030030</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 5 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/JAMILAH MUFIDAH.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Pendidikan Bahasa Arab</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 05</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">JAMILAH MUFIDAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369130004</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 6 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/DIANA FITRIAH.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Administrasi Bisnis</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 06</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">DIANA FITRIAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369090046</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 7 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/AHMAD IRSAD.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Pendidikan Agama Islam</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 07</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">AHMAD IRSAD</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369120118</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 8 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/ACHMAD AFANDI.jpg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Administrasi Bisnis</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 08</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">ACHMAD AFANDI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369090088</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 9 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/ADITIA DWI IKHYA'I.jpeg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Industri</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 09</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">ADITIA DWI IKHYA'I</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369030008</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 10 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/CHOIROTUN NISA'.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ekonomi Syariah</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 10</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">CHOIROTUN NISA'</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369140017</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 11 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/INTAN DWI RAHMAWATI.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ilmu Al-Qur'an Dan Tafsir</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 11</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">INTAN DWI RAHMAWATI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369150025</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 12 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MITA IRMA DESIANTI.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Psikologi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 12</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">MITA IRMA DESIANTI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369110018</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 13 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MUHAMMAD RUDI.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ilmu Komunikasi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 13</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">MUHAMMAD RUDI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369100043</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 14 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MOCHAMMAD SALIM.jpg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Informatika</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 14</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">MOCHAMMAD SALIM</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369040090</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 15 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MUKHAMAT LUTFI RAMADANI.jpeg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Administrsi Bisnis</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 15</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">MUKHAMAT LUTFI RAMADHANI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369090134</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 16 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/Nabilah Maulidah Aliyyah.png" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Pendidikan Agama Islam</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 16</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">NABILAH MAULIDAH ALIYYAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369120127</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 17 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/NUR LAILATUL HASANAH.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ilmu Komunikasi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 17</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">NUR LAILATUL HASANAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369100060</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 18 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/NADIA ZAKIYA ATTAMIMI.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Psikologi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 18</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">NADIA ZAKIYA ATTAMIMI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369110054</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 19 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/SUKRON MARZUKI.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Informatika</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 19</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">SUKRON MARZUKI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369040030</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 20 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/Wahyu Saputri N.jpg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Administrasi Bisnis</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 20</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">WAHYU SAPUTRI NINGSIH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369090111</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 21 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/M NUR ILHAM KOHARI.PNG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Psikologi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 21</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">M NUR ILHAM KOHARI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369110056</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 22 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/SELVIA MARSELLA RAHMAN.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ekonomi Syariah</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 22</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">SELVIA MARSELLA RAHMAN</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369140016</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 23 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/ROSA NUR AINI.jpeg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Pendidikan Agama Islam</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 23</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">ROSA NUR AINI</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369120091</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 24 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/YESSA ARTHA SEFRILA.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Ilmu Al-Qur'an Dan Tafsir</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 24</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">YESSA ARTHA SEFRILA</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369150029</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 25 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/DEWI YUMNA SARI SUSILO.jpeg" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Psikologi</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 25</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">DEWI YUMNA SARI SUSILO</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369110098</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member Card 26 -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden group hover:shadow-2xl transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-6 space-y-6">
+                        <div class="relative h-64 bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                            <img src="anggota/MOCHAMMAD RIFQI ARIFULLOH.JPG" alt="Nadia Kirana" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-brandLightBlue text-brandBlue text-xs font-bold rounded-lg uppercase tracking-wide">Teknik Industri</span>
+                                <span class="text-xs font-bold text-slate-400">Anggota 26</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-900 leading-tight">AQILAH LUTFIAH SALSABILLAH</h3>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-bold">
+                                <span>NIM : 202369030031</span>
+                                <span class="flex items-center gap-1 text-emerald-500"><i class="fa-solid fa-circle-check"></i> AKTIF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: PRESENSI BARCODE -->
+        <section id="view-presensi" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Presensi Berkode</h2>
+                <p class="text-slate-500 text-sm">Media presensi harian berbasis kode QR digital untuk memantau kehadiran anggota dalam rangkaian program pengabdian.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl border border-slate-100 text-center relative overflow-hidden" data-aos="zoom-in">
+                <div class="absolute -top-12 -right-12 w-28 h-28 bg-brandBlue/10 rounded-full blur-xl"></div>
+                <div class="absolute -bottom-12 -left-12 w-28 h-28 bg-brandLightBlue rounded-full blur-xl"></div>
+                
+                <span class="inline-block bg-brandLightBlue text-brandBlue text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider mb-6">QR PRESENSI RESMI</span>
+                
+                <div class="bg-slate-50 p-6 rounded-2xl inline-block shadow-inner border border-slate-100 mb-6">
+                    <!-- Dynamic QR Code Placeholder -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=KKNGerbo2026PresensiHarian" alt="QR Code" class="mx-auto block shadow-sm bg-white p-2 rounded-xl">
+                </div>
+                
+                <div class="space-y-4 text-sm font-semibold">
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 flex items-center justify-between text-left">
+                        <span class="text-slate-500">Jenis Kegiatan</span>
+                        <span class="text-brandDarkBlue font-extrabold">Evaluasi Proker Mingguan</span>
+                    </div>
+                    <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-100 flex items-center justify-between text-left text-rose-700">
+                        <span>Batas Waktu</span>
+                        <span class="font-extrabold"><i class="fa-regular fa-clock mr-1"></i> Sebelum 08:30 WIB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: PROGRAM KERJA -->
+        <section id="view-proker" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Program Kerja</h2>
+                <p class="text-slate-500 text-sm">Klik salah satu sampul program kerja untuk mengeksplorasi tabel status kegiatan dan tanggal pelaksanaannya secara dinamis.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Program Covers Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Pendidikan -->
+                <div onclick="bukaTabelProker('Pendidikan')" class="cursor-pointer group bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 border border-slate-100">
+                    <div class="relative h-44 bg-slate-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=300&q=80" alt="Pendidikan" class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-brandDarkBlue/40 flex items-center justify-center">
+                            <i class="fa-solid fa-graduation-cap text-white text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between bg-white">
+                        <h4 class="font-extrabold text-brandDarkBlue">Pendidikan</h4>
+                        <span class="w-8 h-8 rounded-full bg-brandLightBlue text-brandBlue flex items-center justify-center text-xs group-hover:bg-brandBlue group-hover:text-white transition"><i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <!-- Ekonomi Kreatif -->
+                <div onclick="bukaTabelProker('Ekonomi Kreatif')" class="cursor-pointer group bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 border border-slate-100">
+                    <div class="relative h-44 bg-slate-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1513258496099-48168024addd?auto=format&fit=crop&w=300&q=80" alt="Ekonomi" class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-brandDarkBlue/40 flex items-center justify-center">
+                            <i class="fa-solid fa-hand-holding-dollar text-white text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between bg-white">
+                        <h4 class="font-extrabold text-brandDarkBlue">Ekonomi Kreatif</h4>
+                        <span class="w-8 h-8 rounded-full bg-brandLightBlue text-brandBlue flex items-center justify-center text-xs group-hover:bg-brandBlue group-hover:text-white transition"><i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <!-- Sosial Masyarakat -->
+                <div onclick="bukaTabelProker('Sosial Masyarakat')" class="cursor-pointer group bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 border border-slate-100">
+                    <div class="relative h-44 bg-slate-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1469571486040-7a3081c22d7a?auto=format&fit=crop&w=300&q=80" alt="Sosial" class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-brandDarkBlue/40 flex items-center justify-center">
+                            <i class="fa-solid fa-people-group text-white text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between bg-white">
+                        <h4 class="font-extrabold text-brandDarkBlue">Sosial Kemasyarakatan</h4>
+                        <span class="w-8 h-8 rounded-full bg-brandLightBlue text-brandBlue flex items-center justify-center text-xs group-hover:bg-brandBlue group-hover:text-white transition"><i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <!-- Budidaya -->
+                <div onclick="bukaTabelProker('Budidaya')" class="cursor-pointer group bg-white rounded-2xl shadow-md overflow-hidden transform hover:-translate-y-2 transition duration-300 border border-slate-100">
+                    <div class="relative h-44 bg-slate-100 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=300&q=80" alt="Budidaya" class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-brandDarkBlue/40 flex items-center justify-center">
+                            <i class="fa-solid fa-seedling text-white text-4xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between bg-white">
+                        <h4 class="font-extrabold text-brandDarkBlue">Pengembangan Budidaya</h4>
+                        <span class="w-8 h-8 rounded-full bg-brandLightBlue text-brandBlue flex items-center justify-center text-xs group-hover:bg-brandBlue group-hover:text-white transition"><i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Section (Interactive Program List Table) -->
+            <div id="subpage-tabel-proker" class="hidden bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-150 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold text-brandBlue uppercase tracking-wider block">DAFTAR DETAIL PROGRAM KERJA</span>
+                        <h3 id="judulTabelProker" class="text-xl sm:text-2xl font-extrabold text-brandDarkBlue">Kategori</h3>
+                    </div>
+                    <button onclick="tutupTabelProker()" class="p-2 bg-slate-100 text-slate-500 hover:text-slate-800 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-xmark mr-1"></i> Tutup</button>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-150 shadow-inner">
+                    <table class="min-w-full divide-y divide-slate-150 text-sm">
+                        <thead class="bg-slate-50 text-slate-600 font-bold">
+                            <tr>
+                                <th class="px-6 py-4 text-left">Tanggal</th>
+                                <th class="px-6 py-4 text-left">Nama Kegiatan / Agenda</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="badanTabelProker" class="divide-y divide-slate-100 font-semibold">
+                            <!-- Dynamic Rows via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: KEUANGAN -->
+        <section id="view-keuangan" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Transparansi Keuangan</h2>
+                <p class="text-slate-500 text-sm">Penyajian akuntabilitas arus kas masuk dan keluar secara komprehensif disertai representasi grafik visualisasi data yang informatif.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Financial Balance Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up">
+                <div class="bg-brandDarkBlue text-white p-6 sm:p-8 rounded-3xl shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-brandBlue rounded-full opacity-35"></div>
+                    <span class="text-xs font-bold text-blue-200 tracking-wider uppercase block">Sisa Saldo Kas Utama</span>
+                    <h3 class="text-3xl font-black mt-2">Rp 4.750.000</h3>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-150 p-6 sm:p-8 rounded-3xl shadow-sm">
+                    <span class="text-xs font-bold text-emerald-600 tracking-wider uppercase block">Total Pemasukan</span>
+                    <h3 class="text-3xl font-black text-emerald-700 mt-2">Rp 7.500.000</h3>
+                </div>
+                <div class="bg-rose-50 border border-rose-150 p-6 sm:p-8 rounded-3xl shadow-sm">
+                    <span class="text-xs font-bold text-rose-600 tracking-wider uppercase block">Total Pengeluaran</span>
+                    <h3 class="text-3xl font-black text-rose-700 mt-2">Rp 2.750.000</h3>
+                </div>
+            </div>
+
+            <!-- Detailed Table & Chart Visualization -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <!-- Color-Coded Cash Flow Table -->
+                <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden" data-aos="fade-up">
+                    <div class="p-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                        <h4 class="font-extrabold text-brandDarkBlue text-sm sm:text-base"><i class="fa-solid fa-list-check text-brandBlue mr-1.5"></i> Jurnal Arus Kas Masuk & Keluar</h4>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-100 text-xs sm:text-sm">
+                            <thead class="bg-slate-50 font-bold text-slate-500">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-left">Deskripsi Alokasi</th>
+                                    <th class="px-6 py-3.5 text-right">Nominal Arus</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-semibold">
+                                <!-- Green Rows (Income) -->
+                                <tr class="bg-emerald-50/75 text-emerald-950">
+                                    <td class="px-6 py-4"><i class="fa-solid fa-arrow-down-long text-emerald-500 mr-2"></i>Iuran Pokok Kolektif Tim KKN</td>
+                                    <td class="px-6 py-4 text-right font-black">+ Rp 5.000.000</td>
+                                </tr>
+                                <tr class="bg-emerald-50/70 text-emerald-950">
+                                    <td class="px-6 py-4"><i class="fa-solid fa-arrow-down-long text-emerald-500 mr-2"></i>Sponsorship & Bantuan Universitas</td>
+                                    <td class="px-6 py-4 text-right font-black">+ Rp 2.500.000</td>
+                                </tr>
+                                <!-- Red Rows (Expense) -->
+                                <tr class="bg-rose-50/70 text-rose-950">
+                                    <td class="px-6 py-4"><i class="fa-solid fa-arrow-up-long text-rose-500 mr-2"></i>Pembelian Atribut Posko & Banner Acara</td>
+                                    <td class="px-6 py-4 text-right font-black">- Rp 750.000</td>
+                                </tr>
+                                <tr class="bg-rose-50/70 text-rose-950">
+                                    <td class="px-6 py-4"><i class="fa-solid fa-arrow-up-long text-rose-500 mr-2"></i>Logistik & Konsumsi Rapat Desa</td>
+                                    <td class="px-6 py-4 text-right font-black">- Rp 2.000.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Financial Data Visualization (Chart.js Container) -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-slate-100 flex flex-col items-center" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="font-extrabold text-brandDarkBlue mb-6 self-start flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-brandBlue"></i> Visualisasi Alokasi Anggaran
+                    </h4>
+                    <div class="w-64 h-64 sm:w-72 sm:h-72">
+                        <canvas id="chartKeuangan"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 7: DOKUMENTASI KEGIATAN -->
+        <section id="view-dokumentasi" class="page-view hidden space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <h2 class="text-3xl font-extrabold text-brandDarkBlue tracking-tight">Dokumentasi Kegiatan</h2>
+                <p class="text-slate-500 text-sm">Ketuk sampul utama untuk menjelajahi arsip folder foto dokumentasi dari setiap program pengabdian di Desa Gerbo.</p>
+                <div class="w-16 h-1 bg-brandBlue mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Dokumentasi Cover -->
+            <div id="sampulDokumentasi" onclick="bukaDaftarFolder()" class="cursor-pointer group max-w-lg mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 hover:border-brandBlue hover:shadow-2xl transition duration-500" data-aos="zoom-in">
+                <div class="relative h-56 bg-gradient-to-b from-brandBlue to-brandDarkBlue flex items-center justify-center text-white overflow-hidden">
+                    <div class="absolute inset-0 bg-black/10 opacity-40 z-0"></div>
+                    <i class="fa-regular fa-folder-closed text-7xl z-10 group-hover:scale-110 transition duration-300"></i>
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="font-extrabold text-lg text-brandDarkBlue">Akses Galeri Folder KKN</h3>
+                    <p class="text-xs text-slate-400 font-bold mt-2">Daftar arsip foto per kategori agenda terstruktur</p>
+                </div>
+            </div>
+
+            <!-- Folders List Section (Initially Hidden) -->
+            <div id="subpage-folder-dokumentasi" class="hidden bg-slate-100 p-6 sm:p-8 rounded-3xl border border-slate-200/60 space-y-8">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                    <h3 class="font-extrabold text-brandDarkBlue text-lg"><i class="fa-solid fa-folder-tree text-brandBlue mr-2"></i> Folder Kategori Dokumentasi</h3>
+                    <button onclick="tutupDaftarFolder()" class="p-2 bg-white text-slate-500 hover:text-slate-800 rounded-lg text-xs font-bold shadow-sm transition"><i class="fa-solid fa-xmark mr-1"></i> Tutup</button>
+                </div>
+
+                <!-- Grid Folders -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Folder Item 1 -->
+                    <div onclick="bukaKoleksiFoto('Penyuluhan Ekonomi & UMKM', '18 Juli 2026', '09:00 WIB')" class="bg-white p-6 rounded-2xl border border-slate-200/50 shadow-md hover:shadow-xl hover:border-brandBlue cursor-pointer transition duration-300 flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="text-amber-500 text-4xl group-hover:scale-105 transition duration-300"><i class="fa-solid fa-folder-open"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-base">Penyuluhan Ekonomi & UMKM</h4>
+                                <p class="text-xs text-slate-400 font-bold mt-2"><i class="fa-regular fa-calendar-days mr-1.5"></i> 18 Juli 2026</p>
+                                <p class="text-xs text-slate-400 font-bold mt-1"><i class="fa-regular fa-clock mr-1.5"></i> 09:00 WIB</p>
+                            </div>
+                        </div>
+                        <span class="text-brandBlue font-extrabold text-xs mt-6 inline-flex items-center gap-1">Buka Folder <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                    </div>
+
+                    <!-- Folder Item 2 -->
+                    <div onclick="bukaKoleksiFoto('Kerja Bakti & Sosial', '25 Juli 2026', '07:30 WIB')" class="bg-white p-6 rounded-2xl border border-slate-200/50 shadow-md hover:shadow-xl hover:border-brandBlue cursor-pointer transition duration-300 flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="text-amber-500 text-4xl group-hover:scale-105 transition duration-300"><i class="fa-solid fa-folder-open"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-base">Kerja Bakti & Sosial</h4>
+                                <p class="text-xs text-slate-400 font-bold mt-2"><i class="fa-regular fa-calendar-days mr-1.5"></i> 25 Juli 2026</p>
+                                <p class="text-xs text-slate-400 font-bold mt-1"><i class="fa-regular fa-clock mr-1.5"></i> 07:30 WIB</p>
+                            </div>
+                        </div>
+                        <span class="text-brandBlue font-extrabold text-xs mt-6 inline-flex items-center gap-1">Buka Folder <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                    </div>
+
+                    <!-- Folder Item 3 -->
+                    <div onclick="bukaKoleksiFoto('Pojok Literasi & Belajar', '02 Agustus 2026', '10:00 WIB')" class="bg-white p-6 rounded-2xl border border-slate-200/50 shadow-md hover:shadow-xl hover:border-brandBlue cursor-pointer transition duration-300 flex flex-col justify-between group">
+                        <div class="space-y-4">
+                            <div class="text-amber-500 text-4xl group-hover:scale-105 transition duration-300"><i class="fa-solid fa-folder-open"></i></div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-base">Pojok Literasi & Belajar</h4>
+                                <p class="text-xs text-slate-400 font-bold mt-2"><i class="fa-regular fa-calendar-days mr-1.5"></i> 02 Agustus 2026</p>
+                                <p class="text-xs text-slate-400 font-bold mt-1"><i class="fa-regular fa-clock mr-1.5"></i> 10:00 WIB</p>
+                            </div>
+                        </div>
+                        <span class="text-brandBlue font-extrabold text-xs mt-6 inline-flex items-center gap-1">Buka Folder <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid of Photos (Nested Album View) -->
+            <div id="subpage-album-foto" class="hidden bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-150 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
+                    <div>
+                        <span id="metaAlbumFoto" class="text-xs font-bold text-brandBlue uppercase tracking-wider block">NAMA KEGIATAN & TANGGAL</span>
+                        <h3 id="judulAlbumFoto" class="text-xl sm:text-2xl font-extrabold text-brandDarkBlue">Koleksi Dokumentasi</h3>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="kembaliKeFolder()" class="p-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl text-xs hover:bg-slate-200 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Folder</button>
+                    </div>
+                </div>
+
+                <!-- Photos Grid Container -->
+                <div id="containerGridFoto" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Populated via Javascript dynamically -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-brandDarkBlue text-white border-t border-brandBlue/20 text-xs sm:text-sm font-semibold tracking-wide text-center py-10 mt-20">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center p-1">
+                    <img src="LOGO KKN 2026.png" 
+                         alt="Logo Yudharta" 
+                         class="w-full h-full object-contain"
+                         onerror="this.style.display='none'; document.getElementById('fallback-svg-footer').style.display='block';">
+                    <svg id="fallback-svg-footer" class="w-5 h-5 fill-brandBlue hidden" viewBox="0 0 24 24">
+                        <path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6zm-1 8h2v3h-2v-3zm0-4h2v2h-2v-2z"/>
+                    </svg>
+                </div>
+                <span class="font-extrabold text-slate-200">KKN GERBO Pasuruan 2026 - Universitas Yudharta</span>
+            </div>
+            <p class="text-slate-400">&copy; 2026 Pengabdian Masyarakat Terintegrasi. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS (Animate On Scroll) Javascript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animations to work on scroll up/down
+        AOS.init({
+            duration: 900,
+            once: false,
+            mirror: true
+        });
+
+        // 1. Single Page Application Routing Logic
+        function switchView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.page-view');
+            views.forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // Show targets
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) {
+                targetView.classList.remove('hidden');
+            }
+
+            // Update desktop active navigation styles
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.className = "nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-600 hover:text-brandBlue hover:bg-slate-50 transition";
+            });
+
+            const activeBtn = document.getElementById(`nav-${viewId}`);
+            if (activeBtn) {
+                activeBtn.className = "nav-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-bold text-brandBlue bg-brandLightBlue transition";
+            }
+
+            // Update mobile active navigation styles
+            const mobileButtons = document.querySelectorAll('.mobile-nav-btn');
+            mobileButtons.forEach(btn => {
+                if(btn.id !== 'nav-dokumentasi') {
+                    btn.className = "mobile-nav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition";
+                }
+            });
+
+            // Reset page scroll position
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Trigger AOS refresh to compute animations on the newly visible tab content
+            setTimeout(() => {
+                AOS.refresh();
+            }, 150);
+        }
+
+        // Toggle Mobile Menu Open/Close
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-2xl";
+            } else {
+                menu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-2xl";
+            }
+        }
+
+        // 2. Program Kerja Sub-page Data Storage
+        const prokerData = {
+            'Pendidikan': [
+                { tgl: '14 Juli 2026', nama: 'Pendataan Kebutuhan Fasilitas Rumah Belajar Gerbo', status: true },
+                { tgl: '18 Juli 2026', nama: 'Pembagian Buku Pelajaran & Sosialisasi Literasi Sekolah Dasar', status: true },
+                { tgl: '22 Juli 2026', nama: 'Pengadaan Bimbel Gratis & Pojok Kreativitas Anak Mandiri', status: false }
+            ],
+            'Ekonomi Kreatif': [
+                { tgl: '20 Juli 2026', nama: 'Pelatihan Kemasan Higienis Keripik Singkong Khas Gerbo', status: true },
+                { tgl: '25 Juli 2026', nama: 'Digitalisasi Pasar Melalui Pembuatan Akun E-commerce Bersama Mitra', status: false }
+            ],
+            'Sosial Masyarakat': [
+                { tgl: '12 Juli 2026', nama: 'Kerja Bakti Massal Bersama Warga Dusun Gerbo Tengah', status: true },
+                { tgl: '28 Juli 2026', nama: 'Sosialisasi Penanggulangan Sampah & Pembagian Bak Sampah Komparatif', status: false }
+            ],
+            'Budidaya': [
+                { tgl: '21 Juli 2026', nama: 'Sosialisasi Pembuatan Pestisida Organik Berbasis Limbah Rumah Tangga', status: true },
+                { tgl: '03 Agustus 2026', nama: 'Implementasi Instalasi Irigasi Hidroponik Percontohan Dusun Krajan', status: false }
+            ]
+        };
+
+        function bukaTabelProker(kategori) {
+            const subpage = document.getElementById('subpage-tabel-proker');
+            const judul = document.getElementById('judulTabelProker');
+            const badanTabel = document.getElementById('badanTabelProker');
+            
+            judul.innerText = `Program Bidang ${kategori}`;
+            badanTabel.innerHTML = ''; // clear initial rows
+            
+            prokerData[kategori].forEach(item => {
+                const tr = document.createElement('tr');
+                
+                // Color formatting depending on completed (green) or uncompleted (red) state
+                const bgWarna = item.status ? 'bg-emerald-50 text-emerald-900 border-b border-emerald-100' : 'bg-rose-50 text-rose-900 border-b border-rose-100';
+                const statusBadge = item.status ? '<span class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-sm">Terlaksana</span>' : '<span class="px-3 py-1 bg-rose-600 text-white rounded-lg text-xs font-black uppercase tracking-wider shadow-sm">Belum Terlaksana</span>';
+                
+                tr.className = bgWarna;
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-bold whitespace-nowrap">${item.tgl}</td>
+                    <td class="px-6 py-4 font-medium">${item.nama}</td>
+                    <td class="px-6 py-4 text-center">${statusBadge}</td>
+                `;
+                badanTabel.appendChild(tr);
+            });
+
+            subpage.classList.remove('hidden');
+            subpage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function tutupTabelProker() {
+            document.getElementById('subpage-tabel-proker').classList.add('hidden');
+        }
+
+        // 3. Dokumentasi Folder Explorer Data Storage & Logic
+        const folderPhotos = {
+            'Penyuluhan Ekonomi & UMKM': [
+                'https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Kerja Bakti & Sosial': [
+                'https://images.unsplash.com/photo-1469571486040-7a3081c22d7a?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Pojok Literasi & Belajar': [
+                'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80'
+            ]
+        };
+
+        function bukaDaftarFolder() {
+            document.getElementById('subpage-folder-dokumentasi').classList.remove('hidden');
+            document.getElementById('subpage-folder-dokumentasi').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function tutupDaftarFolder() {
+            document.getElementById('subpage-folder-dokumentasi').classList.add('hidden');
+            document.getElementById('subpage-album-foto').classList.add('hidden');
+        }
+
+        function bukaKoleksiFoto(namaFolder, tanggal, waktu) {
+            const albumSubpage = document.getElementById('subpage-album-foto');
+            const meta = document.getElementById('metaAlbumFoto');
+            const judul = document.getElementById('judulAlbumFoto');
+            const containerGrid = document.getElementById('containerGridFoto');
+            
+            meta.innerText = `${tanggal} | ${waktu}`;
+            judul.innerText = namaFolder;
+            containerGrid.innerHTML = ''; // clear previous photos
+
+            folderPhotos[namaFolder].forEach((imgUrl, indeks) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'group relative rounded-2xl overflow-hidden h-64 shadow-md bg-slate-100 border border-slate-100';
+                
+                // HTML structure with explicit modern download symbols/icons and visual labels
+                itemDiv.innerHTML = `
+                    <img src="${imgUrl}" alt="Foto ${indeks + 1}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-brandDarkBlue/85 opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col items-center justify-center text-white gap-2 text-center p-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-blue-200">Foto Dokumentasi ${indeks + 1}</p>
+                        <a href="${imgUrl}" download="KKNGerbo_Foto_${indeks + 1}.jpg" class="mt-2 inline-flex items-center gap-2 px-4 py-2.5 bg-white text-brandDarkBlue font-black text-xs rounded-xl shadow hover:bg-slate-150 transition">
+                            <i class="fa-solid fa-cloud-arrow-down text-sm"></i> Unduh Foto
+                        </a>
+                    </div>
+                `;
+                containerGrid.appendChild(itemDiv);
+            });
+
+            albumSubpage.classList.remove('hidden');
+            albumSubpage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function kembaliKeFolder() {
+            document.getElementById('subpage-album-foto').classList.add('hidden');
+            document.getElementById('subpage-folder-dokumentasi').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 4. Financial Doughnut Chart (Chart.js)
+        const ctx = document.getElementById('chartKeuangan').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pengeluaran (Merah)', 'Sisa Saldo Kas (Biru)'],
+                datasets: [{
+                    data: [2750000, 4750000],
+                    backgroundColor: ['#f43f5e', '#00529C'],
+                    hoverBackgroundColor: ['#e11d48', '#003366'],
+                    borderWidth: 4,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Plus Jakarta Sans',
+                                size: 12,
+                                weight: '600'
+                            },
+                            color: '#334155'
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>
